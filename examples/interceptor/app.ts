@@ -32,7 +32,7 @@ axios({
   url: '/interceptor/get',
   method: 'get',
   headers: {
-    // test: ''
+    test: ''
   }
 }).then((res) => {
   console.log(res.data)

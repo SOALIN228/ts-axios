@@ -1,5 +1,3 @@
-import InterceptorManager from '../core/InterceptorManager'
-
 export type Method =
   | 'get'
   | 'GET'
@@ -17,6 +15,7 @@ export type Method =
   | 'PATCH'
 
 export interface Axios {
+  defaults: AxiosRequestConfig
   interceptors: {
     request: AxiosInterceptorManage<AxiosRequestConfig>
     response: AxiosInterceptorManage<AxiosResponse>
@@ -45,6 +44,10 @@ export interface AxiosInterface extends Axios {
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
+export interface AxiosStatic extends AxiosInterface {
+  create(config?: AxiosRequestConfig): AxiosInterface
+}
+
 export interface AxiosRequestConfig {
   url?: string
   method?: Method
@@ -53,6 +56,10 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
+
+  [propName: string]: any
 }
 
 export interface AxiosResponse<T = any> {
@@ -86,4 +93,8 @@ export interface AxiosInterceptorManage<T> {
   use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number
 
   eject(id: number): void
+}
+
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }
