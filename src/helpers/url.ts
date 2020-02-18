@@ -53,3 +53,26 @@ export function bulidURL(url: string, params: any): string {
 
   return url
 }
+
+interface URLOrigin {
+  protocol: string
+  host: string
+}
+
+export function isURLSameOrigin(requestURL: string): boolean {
+  const parseOrigin = resolveURL(requestURL)
+  return parseOrigin.protocol === currentOrigin.protocol && parseOrigin.host === currentOrigin.host
+}
+
+const urlParsingNode = document.createElement('a')
+const currentOrigin = resolveURL(window.location.href)
+
+function resolveURL(url: string): URLOrigin {
+  urlParsingNode.setAttribute('href', url)
+  const { protocol, host } = urlParsingNode
+
+  return {
+    protocol,
+    host
+  }
+}
